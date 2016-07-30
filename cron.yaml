@@ -1,0 +1,4 @@
+cron:
+- description: crawling
+  url: /crawl
+  schedule: every 1 minutes

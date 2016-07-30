@@ -1,0 +1,8 @@
+transformers:
+- kind: TagText_Sampling
+  connector: csv
+  connector_options:
+    encoding: utf-8
+  property_map:
+    - property: text
+      external_name: text
