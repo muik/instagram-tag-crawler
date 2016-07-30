@@ -12,6 +12,7 @@ class TagText_Sampling(ndb.Model):
   KEY_RECENT_CODES = 'recent_codes'
   KEY_PRE_OWNER_IDS = 'pre_owner_ids'
 
+  # use TextProperty for not exceeding free quota
   codes_inline = ndb.TextProperty()
   text = ndb.TextProperty()
   created_at = ndb.DateTimeProperty(auto_now_add=True)
