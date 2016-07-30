@@ -96,8 +96,8 @@ TagText = TagText_Sampling
 class TagValidator:
   MIN_TAGS_COUNT = 3
   BAD_TAGS = set([u'섹스',u'섹그램',u'섹텍',u'야그램',u'가슴',u'슴스타그램',
-      u'일탈',u'일탈남',u'일탈녀',u'여자신음',u'오프녀',u'19금',
-      u'섹스싸이트',u'일수',u'성형대출'])
+      u'일탈',u'일탈남',u'일탈녀',u'여자신음',u'오프녀',u'19금',u'가슴노출',
+      u'섹스녀',u'섹파구함',u'섹스싸이트',u'일수',u'성형대출',u'조건만남'])
 
   @classmethod
   def is_valid_tags(cls, tags):
