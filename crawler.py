@@ -44,5 +44,5 @@ class Crawler:
     return nodes
 
   def _get_tags(self, caption):
-    return [x[1:] for x in re.findall(r'#[^#\s\',\(\)!\.~\-/&\+\*$]+', caption)]
+    return [x[1:] for x in re.findall(r'#[^#\s\',\(\)!\.~\-/&\+\*$]+', caption.lower())]
 
