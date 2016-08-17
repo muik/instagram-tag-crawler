@@ -1,5 +1,5 @@
 transformers:
-- kind: TagText_Sampling
+- kind: TagText_Sampling2
   connector: csv
   connector_options:
     encoding: utf-8

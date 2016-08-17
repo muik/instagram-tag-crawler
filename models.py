@@ -6,14 +6,13 @@ import re
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
 
-class TagText_Sampling(ndb.Model):
+class TagText_Sampling2(ndb.Model):
   MAX_CODES_COUNT = 300
   MAX_OWNER_COUNT = 300
   KEY_RECENT_CODES = 'recent_codes'
   KEY_PRE_OWNER_IDS = 'pre_owner_ids'
 
   # use TextProperty for not exceeding free quota
-  codes_inline = ndb.TextProperty()
   text = ndb.TextProperty()
   created_at = ndb.DateTimeProperty(auto_now_add=True)
 
@@ -21,9 +20,12 @@ class TagText_Sampling(ndb.Model):
   def _get_recent_codes(cls):
     inline = memcache.get(cls.KEY_RECENT_CODES)
     if inline == None:
-      tag_text = cls.query().order(-cls.created_at).get()
-      return tag_text and tag_text.codes_inline and tag_text.codes_inline.split() or []
+      return []
     return inline.split()
+
+  @classmethod
+  def _to_line(cls, medium):
+    return ' '.join([medium['code'], medium['owner']['id']] + medium['tags'])
 
   @classmethod
   def save(cls, media):
@@ -48,8 +50,7 @@ class TagText_Sampling(ndb.Model):
       return 0
 
     tag_text = cls()
-    tag_text.codes_inline = ' '.join([x['code'] for x in new_media])
-    tag_text.text = '\n'.join([' '.join(x['tags']) for x in new_media])
+    tag_text.text = '\n'.join(map(cls._to_line, new_media))
     tag_text.put()
 
     recent_codes.extend([x['code'] for x in media])
@@ -90,14 +91,15 @@ class TagText_Sampling(ndb.Model):
     memcache.set(key, ' '.join(items))
 
 # for model clustering
-TagText = TagText_Sampling
+TagText = TagText_Sampling2
 
 
 class TagValidator:
-  MIN_TAGS_COUNT = 3
+  MIN_TAGS_COUNT = 2
   BAD_TAGS = set([u'섹스',u'섹그램',u'섹텍',u'야그램',u'가슴',u'슴스타그램',
       u'일탈',u'일탈남',u'일탈녀',u'여자신음',u'오프녀',u'19금',u'가슴노출',
-      u'섹스녀',u'섹파구함',u'섹스싸이트',u'일수',u'성형대출',u'조건만남'])
+      u'섹스녀',u'섹파구함',u'섹스싸이트',u'섹스파트너',u'일수',u'성형대출',
+      u'조건만남',u'섹스타그램'])
 
   @classmethod
   def is_valid_tags(cls, tags):
